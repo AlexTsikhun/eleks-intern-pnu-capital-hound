@@ -30,7 +30,7 @@ def get_country_name(lat, lon):
     response = requests.get(url, headers=headers).json()
     print(response)
     # print(response["address"]["country"])
-    # return response["address"]["country"]
+    return response["address"]["country"]
 
 
 def get_capital(country):
@@ -48,7 +48,7 @@ def get_altitude(lat, lon):
     response = requests.get(url).json()
 
     #{'results': [{'dataset': 'etopo1', 'elevation': 122.0, 'location': {'lat': 48.0, 'lng': 23.0}}], 'status': 'OK'}
-    # print("elevation", response["results"][0]["elevation"])
+    print("elevation", response["results"][0]["elevation"])
     return response["results"][0]["elevation"]
 
 def get_coord_capital(country):
@@ -76,7 +76,7 @@ def get_population(country):
     # print(population)
     return population
 
-def three_nearest_country():
+def three_nearest_country(input_coord):
     # iterate throught all countries
     nearest_capital = []
     nearest_distance = []
@@ -86,14 +86,15 @@ def three_nearest_country():
         country_name = country.name
         # print(country_name)
         # get_capital(country_name)
-
+        if not country_name:
+            continue
+        
         try:
             coord = get_coord_capital(country_name)
             # latitude, longitude = coord
             distance = get_distance_inpPoint_capital(input_coord, coord) 
             # distance = ((latitude - lat) ** 2 + (longitude - lon) ** 2) ** 0.5
 
-            
             nearest_capital.append(country_name)
             nearest_distance.append(distance)
 
@@ -105,6 +106,7 @@ def three_nearest_country():
     total_time = end_time - start_time
 # 138.35876393318176
     print("Execution time:", total_time, "seconds")
+    return nearest_capitals
 
 
 def check_coordinates(latitude, longitude):
@@ -117,15 +119,15 @@ def check_coordinates(latitude, longitude):
 ## China
 # lat = 39.9042
 # lon = 116.4074
-lat = 48.9226
-lon = 24.7111
+# lat = 48.9226
+# lon = 24.7111
 
 # if check_coordinates(lat, lon):
 #     print("Valid coordinates.")
 
 # input_coord = (lat, lon)
 
-country = get_country_name(lat, lon)
+# country = get_country_name(lat, lon)
 # print('---------------')
 # capital = get_capital(country)
 # print(*capital)

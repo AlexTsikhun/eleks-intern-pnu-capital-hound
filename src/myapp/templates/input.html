@@ -1,0 +1,26 @@
+<style>
+
+</style>
+
+<div class="main">
+    <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    </form>
+    
+    <input type="checkbox" name="show_info" id="show_info">
+    <button type="submit">Submit</button>
+
+    <ul>
+        {% for output in outputs %}
+            <li>{{ output }}</li>
+        {% endfor %}
+    </ul>
+    <!-- show 3 countries -->
+    {% if countries %}
+    {{ countries|join:", " }}
+
+    {% endif %}
+    <div id="error_message">{{error_message}}</div>
+</div>
