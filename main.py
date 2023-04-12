@@ -106,6 +106,13 @@ def three_nearest_country():
 # 138.35876393318176
     print("Execution time:", total_time, "seconds")
 
+def time_on_car(lat, lon, if_lat=48.9226, if_lon=24.7111):
+    url = f"http://router.project-osrm.org/route/v1/car/{if_lon},{lat};{lon},{if_lat}?overview=false"
+    r = requests.get(url).json()
+    # duration in hours
+    route_1 = r.get("routes")[0]["duration"]/3600
+    print(route_1)
+    return route_1
 
 def check_coordinates(latitude, longitude):
     if -90 <= latitude <= 90 and -180 <= longitude <= 180:
@@ -114,11 +121,11 @@ def check_coordinates(latitude, longitude):
         return False
     
 
-## China
-# lat = 39.9042
-# lon = 116.4074
-lat = 48.9226
-lon = 24.7111
+## IF
+# lat = 48.9226
+# lon = 24.7111
+lat = 50.4501
+lon = 30.5234
 
 # if check_coordinates(lat, lon):
 #     print("Valid coordinates.")
@@ -126,6 +133,7 @@ lon = 24.7111
 # input_coord = (lat, lon)
 
 country = get_country_name(lat, lon)
+travel_on_car = time_on_car(lat, lon)
 # print('---------------')
 # capital = get_capital(country)
 # print(*capital)

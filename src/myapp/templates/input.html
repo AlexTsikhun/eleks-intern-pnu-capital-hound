@@ -1,26 +1,154 @@
 <style>
+    *{
+        font-size: 40px;
 
+    }
+    .form{
+        justify-content: center;
+        padding: 10px;
+
+    }
+    .my-input-class1{
+        border-radius: 20px;
+        margin-right: 10px;
+        margin-left: 5%;
+    }
+    .my-input-class2{
+        border-radius: 20px;
+        margin-right: 10px;
+        margin-left: 1%;
+    }
+    .checkbut{
+        display: flex;
+    justify-content: center;
+    }
+    .form {
+    margin: 0 auto;
+    border-radius: 20px;
+    }
+    /* CSS */
+    .button {
+    appearance: none;
+    background-color: #000000;
+    border: 2px solid #1A1A1A;
+    border-radius: 15px;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-size: 25px;
+    font-weight: 600;
+    line-height: normal;
+    margin: 0;
+    min-height: 60px;
+    min-width: 0;
+    outline: none;
+    padding: 16px 24px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 15%;
+    will-change: transform;
+    }
+
+    .button:disabled {
+    pointer-events: none;
+    }
+
+    .button:hover {
+    box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+    transform: translateY(-2px);
+    }
+
+    .button:active {
+    box-shadow: none;
+    transform: translateY(0);
+    }
+
+    input[type=checkbox]
+    {
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(2); /* IE */
+    -moz-transform: scale(2); /* FF */
+    -webkit-transform: scale(2); /* Safari and Chrome */
+    -o-transform: scale(2); /* Opera */
+    transform: scale(2);
+    margin-left: 10;
+    }
+    .text{
+        display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 40px;
+    /* background-color: aqua; */
+    }
+
+    .flex-container {
+        display: flex;
+    }
+
+    .flex-child {
+        flex: 1;
+    }  
+
+    .flex-child:first-child {
+        margin-right: 20px;
+    }
+    .form{
+        margin-top: 17%;
+        margin-left: 4%;
+    }
+    .right{
+        padding-top: 6%;
+    }
 </style>
 
-<div class="main">
-    <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
+<div class="text">
+    <h1>Capital Hound</h1>
+</div>
+<div class="flex-container">
 
-    </form>
+    <div class="flex-child left">
+        <form method="post" class="form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="button">Find</button>
+            <input type="checkbox" name="show_info" id="show_info">
+
+            <span class="checkboxtext" style="font-size: 20px;">
+                For Additional information
+              </span>
+            </form>
+    </div>
     
-    <input type="checkbox" name="show_info" id="show_info">
-    <button type="submit">Submit</button>
+    <div class="flex-child right">
+        <ul>
+            {% if country %}
+            <li>Country: <b>{{country}}</b></li>
+            <li>Capital: <b>{{capital.0}}</b></li>
+            <li>Capital altitude (m): <b>{{altitude}}</b></li>
+            <li>Coord capital: <b>{{coord_capital}}</b></li>
+            <li>Distance to capital (km): <b>{{distance}}</b></li>
+            <li>Population of country: <b>{{population}}</b></li>
+            <li>Travel on car from IF (hours): <b>{{travel_on_car}}</b></li>
 
-    <ul>
-        {% for output in outputs %}
-            <li>{{ output }}</li>
-        {% endfor %}
-    </ul>
-    <!-- show 3 countries -->
-    {% if countries %}
-    {{ countries|join:", " }}
+            {% endif %}
+        </ul>
+        <!-- show 3 capitals -->
+        {% for capital_list in capitals %}
+        <b>{{ capital_list.0 }}{% if not forloop.last %},</b> {% endif %}
+    {% endfor %}
+        <div id="error_message">{{error_message}}</div>
+    </div>
+    
+  </div>
 
-    {% endif %}
-    <div id="error_message">{{error_message}}</div>
+<div class="main">
+
+    
 </div>

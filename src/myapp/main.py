@@ -28,7 +28,6 @@ def get_country_name(lat, lon):
     headers = {'accept-language': 'en-US'}
     # url = f"https://nominatim.openstreetmap.org/reverse?lat={lat}&lon={lon}&format=json"
     response = requests.get(url, headers=headers).json()
-    print(response)
     # print(response["address"]["country"])
     return response["address"]["country"]
 
@@ -37,10 +36,6 @@ def get_capital(country):
     url = f"https://restcountries.com/v3.1/translation/{country}"
     response = requests.get(url).json()
     # list
-    # print(type(response[0]["capitalInfo"]["latlng"]))
-    # print(response)
-    # print(response[0]["capital"])
-    # print(response[2]["capital"])
     return response[0]["capital"]
 
 def get_altitude(lat, lon):
@@ -55,7 +50,6 @@ def get_coord_capital(country):
     url = f"https://restcountries.com/v3.1/translation/{country}"
     response = requests.get(url).json()
     # return list, but must tuple for calculate distance
-    # print(type(response[0]["capitalInfo"]["latlng"]))
     # list to tuple
     coord = tuple(response[0]["capitalInfo"]["latlng"])
     # print(coord)
@@ -63,7 +57,7 @@ def get_coord_capital(country):
     # return capital
 
 def get_distance_inpPoint_capital(inputPoint_tuple, capital_tuple):
-    haversine_distance = haversine(inputPoint_tuple, capital_tuple)
+    haversine_distance = round(haversine(inputPoint_tuple, capital_tuple), 2)
     # print(haversine_distance)
     return haversine_distance
 
@@ -76,32 +70,43 @@ def get_population(country):
     # print(population)
     return population
 
+def time_on_car(lat, lon, if_lat=48.9226, if_lon=24.7111):
+    """
+    Function calculate time to travel from Ivano-Frankivsk to input place.
+    """
+    url = f"http://router.project-osrm.org/route/v1/car/{if_lon},{lat};{lon},{if_lat}?overview=false"
+    r = requests.get(url).json()
+    # duration in hours
+    route_1 = r.get("routes")[0]["duration"]/3600
+    print(route_1)
+    # Show only 2 character after point
+    route_1 = round(route_1, 2)
+    return route_1
+
 def three_nearest_country(input_coord):
-    # iterate throught all countries
-    nearest_capital = []
+    nearest_countries = []
+    nearest_capitals = []
     nearest_distance = []
     start_time = time.time()
     for country in pycountry.countries:
-
         country_name = country.name
-        # print(country_name)
-        # get_capital(country_name)
-        if not country_name:
-            continue
-        
+      
         try:
             coord = get_coord_capital(country_name)
-            # latitude, longitude = coord
             distance = get_distance_inpPoint_capital(input_coord, coord) 
             # distance = ((latitude - lat) ** 2 + (longitude - lon) ** 2) ** 0.5
 
-            nearest_capital.append(country_name)
+            nearest_countries.append(country_name)
             nearest_distance.append(distance)
 
         except KeyError:
             pass
-    nearest_capitals = [capital for _, capital in nsmallest(3, zip(nearest_distance, nearest_capital))]
-    print(nearest_capitals)
+    nearest_countries = [capital for _, capital in nsmallest(3, zip(nearest_distance, nearest_countries))]
+    # countries to capitals
+    for i in nearest_countries:
+        nearest_capital = get_capital(i)
+        nearest_capitals.append(nearest_capital)
+
     end_time = time.time()
     total_time = end_time - start_time
 # 138.35876393318176
@@ -116,9 +121,6 @@ def check_coordinates(latitude, longitude):
         return False
     
 
-## China
-# lat = 39.9042
-# lon = 116.4074
 # lat = 48.9226
 # lon = 24.7111
 
