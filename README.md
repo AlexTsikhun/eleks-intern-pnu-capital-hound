@@ -50,11 +50,12 @@ For development, you need to use existing APIs for geolocation.
 The application is written in Python. Django - for web, geopy and other idferent libraries and API. Geopy includes geocoder classes for the OpenStreetMap Nominatim, Google Geocoding API (V3), and many other geocoding services.
 
 ### An example of a completed task:
-![example](example.jpg)
-![full](full.jpg)
+<img width="771" alt="image" src="https://user-images.githubusercontent.com/83775762/232803459-a67611ba-9ce0-4f2b-9253-dfb30534cf37.png">
+
+![full](https://user-images.githubusercontent.com/83775762/232802607-00c307b3-7ebf-434a-b10e-0feba399868d.png)
 
 Wrong input example:
-![wrong_val](wrong_val.jpg)
+![wrong_val](https://user-images.githubusercontent.com/83775762/232802891-4a1d1acf-f4ea-4905-8867-d9ca7c96d754.png)
 
 ### Run code in Windows:
 ```
